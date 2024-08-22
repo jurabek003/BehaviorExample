@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberBottomAppBarState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -43,19 +46,27 @@ class MainActivity : ComponentActivity() {
         setContent {
             BehaviorExamopleTheme {
 
-                val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-
+                val topAppBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+                val bottomAppBarScrollBehavior = BottomAppBarDefaults.exitAlwaysScrollBehavior(rememberBottomAppBarState())
                 Scaffold(
                     modifier = Modifier
-                        .nestedScroll(scrollBehavior.nestedScrollConnection)
+                        .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
+                        .nestedScroll(bottomAppBarScrollBehavior.nestedScrollConnection)
                         .fillMaxSize(),
                     topBar = {
                         TopAppBar(
                             title = {
                                 Text(text = "TopAppBar", fontSize = TextUnit.Unspecified)
                             },
-                            scrollBehavior = scrollBehavior
+                            scrollBehavior = topAppBarScrollBehavior
                         )
+                    },
+                    bottomBar = {
+                        BottomAppBar(
+                            scrollBehavior = bottomAppBarScrollBehavior
+                        ) {
+
+                        }
                     }
                 ) { innerPadding ->
                     Column(
